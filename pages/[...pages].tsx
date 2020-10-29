@@ -19,11 +19,15 @@ export async function getStaticProps({
   const data =
     pageItem &&
     (await getPage({ variables: { id: pageItem.id! }, config, preview }))
-  const page = data?.page
+  let page = data?.page
 
   if (!page) {
     // We throw to make sure this fails at build time as this is never expected to happen
-    throw new Error(`Page with slug '${slug}' not found`)
+    // throw new Error(`Page with slug '${slug}' not found`)
+    page = {
+      ...pages[0],
+      body: `*Missing content for locale* Add page with slug of ${slug} to resolve.`
+    }
   }
 
   return {
